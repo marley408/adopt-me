@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 // look into @frontendmasters/pet module
 // from there we want the ANIMAL constant which stores mock dummy data
@@ -13,6 +13,7 @@ import React, { useState, useEffect } from 'react';
 import pet, { ANIMALS } from '@frontendmasters/pet';
 import Results from './Results';
 import useDropdown from './useDropdown';
+import ThemeContext from './ThemeContext';
 
 console.log(pet);
 // sets all defaults on first page render
@@ -23,6 +24,7 @@ const SearchParams = () => {
   const [animal, AnimalDropdown] = useDropdown('Animal', 'Dog', ANIMALS);
   const [breed, BreedDropdown, setBreed] = useDropdown('Breed', '', breeds);
   const [pets, setPets] = useState([]);
+  const [theme, setTheme] = useContext(ThemeContext);
 
   // adding ability to hit pet api and get pets back
   async function requestPets() {
@@ -69,7 +71,19 @@ const SearchParams = () => {
         </label>
         <AnimalDropdown />
         <BreedDropdown />
-        <button>Submit</button>
+        <label htmlFor="theme">
+          <select
+            value={theme}
+            onChange={e => setTheme(e.target.value)}
+            onBlur={e => setTheme(e.target.value)}
+          >
+            <option value="mediumorchid">Medium Orchidru</option>
+            <option value="chartreuse">Chartreuse</option>
+            <option value="peru">Peru</option>
+            <option value="darkblue">Dark Blue</option>
+          </select>
+        </label>
+        <button style={{ backgroundColor: theme }}>Submit</button>
       </form>
       <Results pets={pets} />
     </div>
